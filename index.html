@@ -15,11 +15,11 @@
     </head>
 
     <body>
-        <main>
+        <header>
             <section class="editor">
                 <div class="editor__item">
                     <label for="template-upload">Import a palette</label>
-                    <span><a href="#" onclick="window.download('sample-palette.json')">(get a sample)</a></span>
+                    <span><a href="#" onclick="window.download('sample-palette.json')">(download a sample)</a></span>
                     <input class="editor__input loader" id="template-upload" type="file">
                 </div>
                 <div class="editor__item">
@@ -31,11 +31,16 @@
                     </div>
                 </div>
             </section>
-            <section class="hint" >Hint: click on swatch to highlight foreground/background colors. Mouseover on swatch get color names.</section>
-
+            <div class="hint">Tips</div>
+            <ul class="hint__list">
+                <li>Select a cell to highlight its foreground/background colors</li>
+                <li>Mouseover a cell to get color names</li>
+                <li>Bookmark the page (Ctrl + D) so you can come back to a palette later</li>
+            </ul>
+        </header>
+        <main>
             <div class="palette">
                 <div class="palette__foregrounds palette__swatches"></div>
-                <!--<div class="palette__backgrounds palette__swatches"></div>-->
             </div>
             <div class="matrix"></div>
         </main>

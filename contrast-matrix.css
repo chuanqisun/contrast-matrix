@@ -1,3 +1,7 @@
+body {
+    margin: 8px;
+}
+
 .editor__item + .editor__item{
     margin-top: 20px;
 }
@@ -8,7 +12,11 @@
 }
 
 .hint {
-    margin: 20px 0;
+    margin: 20px 0 0 0;
+}
+
+.hint__list {
+    margin: 0;
 }
 
 .palette__foreground-demo-container {

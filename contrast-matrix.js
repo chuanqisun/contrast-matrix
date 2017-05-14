@@ -1,5 +1,4 @@
 (function () {
-    // ====================== TODO external ===========================
     var FilePicker = (function () {
         function FilePicker(inputElement) {
             var _this = this;
@@ -62,6 +61,8 @@
         View.prototype.render = function () {
             this.renderMatrix();
             this.renderPalette();
+            var model = encodeURIComponent(JSON.stringify(this.model));
+            history.replaceState(model, 'matrix', '?m=' + model);
         };
         View.prototype.renderPalette = function () {
             this.cleanUpElement(this.paletteForegrounds);
@@ -273,17 +274,34 @@
         return Controller;
     }());
     window.onload = function () {
-        var model = new Model();
-        model.backgrounds = [
-            { name: 'Absolutely Black', color: new Color('rgba(0, 0, 0, 1)') },
-            { name: 'Gandalf the Grey', color: new Color('rgba(120, 120, 120, 1)') },
-            { name: 'Absolutely White', color: new Color('rgba(255, 255, 255, 1)') },
-        ];
-        model.foregrounds = [
-            { name: 'Darth Vader Black', color: new Color('rgba(10, 10, 10, 1)') },
-            { name: 'The 25th shade of Grey', color: new Color('rgba(128, 128, 128, 1)') },
-            { name: 'Not-quite White', color: new Color('rgba(240, 240, 240, 1)') },
-        ];
+        var model;
+        // init model from url if avaialbe
+        var pathArray = location.search.split('?m=');
+        if (pathArray.length > 1) {
+            var modelString = pathArray[pathArray.length - 1];
+            model = JSON.parse(decodeURIComponent(modelString));
+            for (var _i = 0, _a = model.backgrounds; _i < _a.length; _i++) {
+                var background = _a[_i];
+                background.color = new Color(background.color.rgba); // rebuild color object from string
+            }
+            for (var _b = 0, _c = model.foregrounds; _b < _c.length; _b++) {
+                var foreground = _c[_b];
+                foreground.color = new Color(foreground.color.rgba); // rebuild color object from string
+            }
+        }
+        else {
+            model = new Model();
+            model.backgrounds = [
+                { name: 'Absolutely Black', color: new Color('rgba(0, 0, 0, 1)') },
+                { name: 'Gandalf the Grey', color: new Color('rgba(120, 120, 120, 1)') },
+                { name: 'Absolutely White', color: new Color('rgba(255, 255, 255, 1)') },
+            ];
+            model.foregrounds = [
+                { name: 'Darth Vader Black', color: new Color('rgba(10, 10, 10, 1)') },
+                { name: 'The 25th shade of Grey', color: new Color('rgba(128, 128, 128, 1)') },
+                { name: 'Not-quite White', color: new Color('rgba(240, 240, 240, 1)') },
+            ];
+        }
         var view = new View(model);
         var controller = new Controller(model, view);
     };
