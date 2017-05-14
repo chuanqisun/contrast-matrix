@@ -1,0 +1,23 @@
+{
+    "foregrounds": [
+        { "name": "Black", "value": "#000000" },
+        { "name": "Grey 700", "value": "#616161" },
+        { "name": "Grey 400", "value": "#BDBDBD" },
+        { "name": "Grey 100", "value": "#F5F5F5" },
+        { "name": "White", "value": "#FFFFFF" }
+    ],
+    "backgrounds": [
+        { "name": "White", "value": "#FFFFFF" },
+        { "name": "Cyan 50", "value": "#E0F7FA" },
+        { "name": "Cyan 100", "value": "#E0F7FA" },
+        { "name": "Cyan 200", "value": "#B2EBF2" },
+        { "name": "Cyan 300", "value": "#80DEEA" },
+        { "name": "Cyan 400", "value": "#4DD0E1" },
+        { "name": "Cyan 500", "value": "#26C6DA" },
+        { "name": "Cyan 600", "value": "#00ACC1" },
+        { "name": "Cyan 700", "value": "#0097A7" },
+        { "name": "Cyan 800", "value": "#00838F" },
+        { "name": "Cyan 900", "value": "#006064" },
+        { "name": "Black", "value": "#000000" }
+    ]
+}
