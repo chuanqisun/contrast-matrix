@@ -4,6 +4,8 @@
   "description": "WCAG 2.0 contrast matrix",
   "main": "contrast-matrix.js",
   "scripts": {
+    "build": "npm run clean && npm run tsc && npm run rollup",
+    "rollup": "rollup -c",
     "tsc": "tsc",
     "clean": "rimraf dist"
   },
@@ -20,6 +22,11 @@
   "devDependencies": {
     "cpx": "^1.5.0",
     "rimraf": "^2.6.1",
-    "rxjs": "^5.4.0"
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "typescript": "^2.3.3"
+  },
+  "dependencies": {
+    "visually": "^0.0.21"
   }
 }
