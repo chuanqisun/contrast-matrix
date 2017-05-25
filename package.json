@@ -1,0 +1,19 @@
+{
+  "name": "contrast-matrix",
+  "version": "1.0.0",
+  "description": "WCAG 2.0 contrast matrix",
+  "main": "contrast-matrix.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henrysun918/contrast-matrix.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/henrysun918/contrast-matrix/issues"
+  },
+  "homepage": "https://github.com/henrysun918/contrast-matrix#readme"
+}
