@@ -1,8 +1,5 @@
-import { Color, FilePicker } from 'visually';
-
+import { Color } from 'visually';
 (() => {
-
     const testColor = new Color('#FFFFFF');
     console.dir(testColor.rgbaString);
-
 })();
