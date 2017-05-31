@@ -11,4 +11,4 @@ export default {
         })
     ],
     dest: 'dist/bundle.js' // equivalent to --output
-    };
+};
