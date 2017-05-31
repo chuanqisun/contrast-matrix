@@ -1,45 +1,5 @@
-import { Color } from 'visually';
+import { Color, FilePicker, JsonFileParser } from 'visually';
 (function () {
-    class FilePicker {
-        constructor(inputElement) {
-            this.inputElement = inputElement;
-            this.observers = [];
-            inputElement.addEventListener('change', (event) => {
-                const fileList = event.target.files;
-                if (fileList.length >= 1) {
-                    const file = fileList[0];
-                    this.observers.forEach(observer => observer(file));
-                }
-            });
-        }
-        addObserver(observer) {
-            this.observers.push(observer);
-        }
-        reset() {
-            this.inputElement.value = '';
-        }
-    }
-    class JsonFileParser {
-        constructor() {
-            this.fileReader = new FileReader();
-            this.observers = [];
-            this.fileReader.onload = (e) => {
-                try {
-                    const result = JSON.parse(this.fileReader.result);
-                    this.observers.forEach(observer => observer(result));
-                }
-                catch (error) {
-                    window.alert('import palette failed. please start with the sample file and try again.');
-                }
-            };
-        }
-        addObserver(observer) {
-            this.observers.push(observer);
-        }
-        parseFile(file) {
-            this.fileReader.readAsText(file);
-        }
-    }
     class Model {
         constructor() {
             // TODO add palette and matrix into model as well
@@ -197,7 +157,7 @@ import { Color } from 'visually';
             this.addForeground = document.getElementsByClassName('editor__add-foreground')[0];
             this.colorPicker = document.getElementsByClassName('editor__color-picker')[0];
             this.inputElement = document.getElementsByClassName('loader')[0];
-            this.loader = new FilePicker(this.inputElement);
+            this.picker = new FilePicker(this.inputElement);
             this.parser = new JsonFileParser();
             this.backgroundNewCounter = 0;
             this.foregroundNewCounter = 0;
@@ -229,12 +189,12 @@ import { Color } from 'visually';
                     window.alert('invalid color value');
                 }
             });
-            this.loader.addObserver(file => this.parser.parseFile(file));
-            this.parser.addObserver(object => {
+            this.picker.filesPicked.subscribe(file => this.parser.parseFile(file[0]));
+            this.parser.fileParsed.subscribe(object => {
                 this.model.backgrounds = object.backgrounds.map((item) => ({ name: item.name, color: new Color(item.value) }));
                 this.model.foregrounds = object.foregrounds.map((item) => ({ name: item.name, color: new Color(item.value) }));
                 this.view.render();
-                this.loader.reset();
+                this.picker.reset();
             });
         }
     }

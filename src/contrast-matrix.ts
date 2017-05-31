@@ -1,52 +1,8 @@
-import { Color } from 'visually';
+import { Color, FilePicker, JsonFileParser } from 'visually';
 
 declare function download(...arg: any[]): any;
 
 (function() {
-    class FilePicker {
-        private observers: { (file: File): any; }[] = [];
-
-        constructor(public inputElement: HTMLInputElement) {
-            inputElement.addEventListener('change', (event: Event) => {
-                const fileList = (event.target as HTMLInputElement).files;
-                if (fileList.length >= 1) {
-                    const file = fileList[0];
-                    this.observers.forEach(observer => observer(file));
-                }
-            });
-        }
-
-        public addObserver(observer: (file: File) => any) {
-            this.observers.push(observer);
-        }
-
-        public reset() {
-            this.inputElement.value = '';
-        }
-    }
-
-    class JsonFileParser {
-        private fileReader = new FileReader();
-        private observers: { (object: any): any; }[] = [];
-        constructor() {
-            this.fileReader.onload = (e) => {
-                try {
-                    const result = JSON.parse(this.fileReader.result);
-                    this.observers.forEach(observer => observer(result));
-                } catch (error) {
-                    window.alert('import palette failed. please start with the sample file and try again.')
-                }
-            }
-        }
-
-        public addObserver(observer: (object: any) => any) {
-            this.observers.push(observer);
-        }
-
-        public parseFile(file: File) {
-            this.fileReader.readAsText(file);
-        }
-    }
     interface IColorViewModel {
         name: string;
         color: Color;
@@ -232,7 +188,7 @@ declare function download(...arg: any[]): any;
         private addForeground = document.getElementsByClassName('editor__add-foreground')[0];
         private colorPicker = document.getElementsByClassName('editor__color-picker')[0] as HTMLInputElement;
         private inputElement = document.getElementsByClassName('loader')[0];
-        private loader = new FilePicker(this.inputElement as HTMLInputElement);
+        private picker = new FilePicker(this.inputElement as HTMLInputElement);
         private parser = new JsonFileParser();
         private backgroundNewCounter = 0;
         private foregroundNewCounter = 0
@@ -268,12 +224,12 @@ declare function download(...arg: any[]): any;
                 }
             });
 
-            this.loader.addObserver(file => this.parser.parseFile(file));
-            this.parser.addObserver(object => {
+            this.picker.filesPicked.subscribe(file => this.parser.parseFile(file[0]));
+            this.parser.fileParsed.subscribe(object => {
                 this.model.backgrounds = object.backgrounds.map((item: any) => ({ name: item.name, color: new Color(item.value)}));
                 this.model.foregrounds = object.foregrounds.map((item: any) => ({ name: item.name, color: new Color(item.value)}));
                 this.view.render();
-                this.loader.reset();
+                this.picker.reset();
             });
         }
     }

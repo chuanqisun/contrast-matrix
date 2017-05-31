@@ -1117,6 +1117,7 @@ var Subject = (function (_super) {
     };
     return Subject;
 }(Observable_1.Observable));
+var Subject_2 = Subject;
 /**
  * @class AnonymousSubject<T>
  */
@@ -1157,47 +1158,51 @@ var AnonymousSubject = (function (_super) {
     return AnonymousSubject;
 }(Subject));
 
+class FilePicker {
+    constructor(inputElement) {
+        this.inputElement = inputElement;
+        this.filesPickedInternal = new Subject_2();
+        this.filesPicked = this.filesPickedInternal.asObservable();
+        this.attachEventHandler();
+    }
+    reset() {
+        this.inputElement.value = '';
+    }
+    attachEventHandler() {
+        this.inputElement.addEventListener('change', (event) => {
+            const fileList = event.target.files;
+            if (fileList.length > 0) {
+                let fileArray = [];
+                for (let i = 0, l = fileList.length; i < l; i++) {
+                    fileArray.push(fileList[i]);
+                }
+                this.filesPickedInternal.next(fileArray);
+            }
+        });
+    }
+}
+
+class JsonFileParser {
+    constructor() {
+        this.fileReader = new FileReader();
+        this.fileParsedInternal = new Subject_2();
+        this.fileParsed = this.fileParsedInternal.asObservable();
+        this.fileReader.onload = (event) => {
+            try {
+                const result = JSON.parse(this.fileReader.result);
+                this.fileParsedInternal.next(result);
+            }
+            catch (error) {
+                this.fileParsedInternal.error('import palette failed. please start with the sample file and try again.');
+            }
+        };
+    }
+    parseFile(file) {
+        this.fileReader.readAsText(file);
+    }
+}
+
 (function () {
-    class FilePicker$$1 {
-        constructor(inputElement) {
-            this.inputElement = inputElement;
-            this.observers = [];
-            inputElement.addEventListener('change', (event) => {
-                const fileList = event.target.files;
-                if (fileList.length >= 1) {
-                    const file = fileList[0];
-                    this.observers.forEach(observer => observer(file));
-                }
-            });
-        }
-        addObserver(observer) {
-            this.observers.push(observer);
-        }
-        reset() {
-            this.inputElement.value = '';
-        }
-    }
-    class JsonFileParser {
-        constructor() {
-            this.fileReader = new FileReader();
-            this.observers = [];
-            this.fileReader.onload = (e) => {
-                try {
-                    const result = JSON.parse(this.fileReader.result);
-                    this.observers.forEach(observer => observer(result));
-                }
-                catch (error) {
-                    window.alert('import palette failed. please start with the sample file and try again.');
-                }
-            };
-        }
-        addObserver(observer) {
-            this.observers.push(observer);
-        }
-        parseFile(file) {
-            this.fileReader.readAsText(file);
-        }
-    }
     class Model {
         constructor() {
             // TODO add palette and matrix into model as well
@@ -1355,7 +1360,7 @@ var AnonymousSubject = (function (_super) {
             this.addForeground = document.getElementsByClassName('editor__add-foreground')[0];
             this.colorPicker = document.getElementsByClassName('editor__color-picker')[0];
             this.inputElement = document.getElementsByClassName('loader')[0];
-            this.loader = new FilePicker$$1(this.inputElement);
+            this.picker = new FilePicker(this.inputElement);
             this.parser = new JsonFileParser();
             this.backgroundNewCounter = 0;
             this.foregroundNewCounter = 0;
@@ -1387,12 +1392,12 @@ var AnonymousSubject = (function (_super) {
                     window.alert('invalid color value');
                 }
             });
-            this.loader.addObserver(file => this.parser.parseFile(file));
-            this.parser.addObserver(object => {
+            this.picker.filesPicked.subscribe(file => this.parser.parseFile(file[0]));
+            this.parser.fileParsed.subscribe(object => {
                 this.model.backgrounds = object.backgrounds.map((item) => ({ name: item.name, color: new Color(item.value) }));
                 this.model.foregrounds = object.foregrounds.map((item) => ({ name: item.name, color: new Color(item.value) }));
                 this.view.render();
-                this.loader.reset();
+                this.picker.reset();
             });
         }
     }
