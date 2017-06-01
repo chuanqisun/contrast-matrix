@@ -1,12 +1,6 @@
 import { Color, FilePicker, JsonFileParser } from 'visually';
+import { Model } from './model';
 (function () {
-    class Model {
-        constructor() {
-            // TODO add palette and matrix into model as well
-            this.backgrounds = [];
-            this.foregrounds = [];
-        }
-    }
     class View {
         constructor(model) {
             this.model = model;
@@ -17,8 +11,8 @@ import { Color, FilePicker, JsonFileParser } from 'visually';
         render() {
             this.renderMatrix();
             this.renderPalette();
-            const model = encodeURIComponent(JSON.stringify(this.model));
-            history.replaceState(model, 'matrix', '?m=' + model);
+            const serializedModel = encodeURIComponent(this.model.searialize());
+            history.replaceState(serializedModel, 'matrix', '?m=' + serializedModel);
         }
         renderPalette() {
             this.cleanUpElement(this.paletteForegrounds);
@@ -199,21 +193,14 @@ import { Color, FilePicker, JsonFileParser } from 'visually';
         }
     }
     window.onload = function () {
-        let model;
+        let model = new Model();
         // init model from url if avaialbe
         const pathArray = location.search.split('?m=');
         if (pathArray.length > 1) {
             const modelString = pathArray[pathArray.length - 1];
-            model = JSON.parse(decodeURIComponent(modelString));
-            for (let background of model.backgrounds) {
-                background.color = new Color(background.color.rgba); // rebuild color object from string
-            }
-            for (let foreground of model.foregrounds) {
-                foreground.color = new Color(foreground.color.rgba); // rebuild color object from string
-            }
+            model.deserialize(decodeURIComponent(modelString));
         }
         else {
-            model = new Model();
             model.backgrounds = [
                 { name: 'Absolutely Black', color: new Color('rgba(0, 0, 0, 1)') },
                 { name: 'Gandalf the Grey', color: new Color('rgba(120, 120, 120, 1)') },
