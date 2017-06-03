@@ -3,10 +3,12 @@ export class Controller {
     constructor(model, view) {
         this.model = model;
         this.view = view;
+        this.mainElement = document.getElementsByClassName('main')[0];
         this.addBackground = document.getElementsByClassName('editor__add-background')[0];
         this.addForeground = document.getElementsByClassName('editor__add-foreground')[0];
         this.colorPicker = document.getElementsByClassName('editor__color-picker')[0];
-        this.inputElement = document.getElementsByClassName('loader')[0];
+        this.inputElement = document.getElementsByClassName('editor__file-input')[0];
+        this.backgroundToggle = document.getElementById('background-toggle');
         this.picker = new FilePicker(this.inputElement);
         this.parser = new JsonFileParser();
         this.backgroundNewCounter = 0;
@@ -45,6 +47,14 @@ export class Controller {
             this.model.foregrounds = object.foregrounds.map((item) => ({ name: item.name, color: new Color(item.value) }));
             this.view.render();
             this.picker.reset();
+        });
+        this.backgroundToggle.addEventListener('click', () => {
+            if (this.backgroundToggle.checked) {
+                this.mainElement.classList.add('main--dark');
+            }
+            else {
+                this.mainElement.classList.remove('main--dark');
+            }
         });
     }
 }

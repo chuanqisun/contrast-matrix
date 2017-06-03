@@ -1,18 +1,30 @@
-body {
-    margin: 8px;
+.editor {
+    margin-right: 3em;
 }
 
-.editor__item + .editor__item{
-    margin-top: 20px;
-}
-
-.editor__input {
+.editor__item-label {
+    margin-bottom: 0.5em;
     display: block;
-    margin-top: 8px;
 }
 
-.hint {
-    margin: 20px 0 0 0;
+.editor__item + .editor__item {
+    margin-top: 1.5em;
+}
+
+.editor__file-input {
+    display: none;
+}
+
+.editor__color-picker {
+    font-size: 0.85rem;
+    height: 2.5em;
+    box-sizing: border-box;
+    padding: 0 0.5em;
+    width: 6em;
+}
+
+.hint__title {
+    margin: 1em 0 0.5em;
 }
 
 .hint__list {

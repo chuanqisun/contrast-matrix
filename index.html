@@ -7,39 +7,56 @@
     <title>WCAG 2.0 Contrast Matrix</title>
     <meta name="description" content="WCAG 2.0 Contrast Matrix">
     <meta name="author" content="Chuanqi Sun">
-    <link rel="stylesheet" href="styles/contrast-matrix.css">
+    <link rel="stylesheet" href="styles/contrast-matrix.css"><!--deprecating-->
+    <link rel="stylesheet" href="styles/style.css">
 
     <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <![endif]-->
     </head>
 
-    <body>
-        <header>
-            <section class="editor">
-                <div class="editor__item">
-                    <div>Note: last updated on 5/31/2017. Your previously bookmarked URL may no longer work</div>
-                    <label for="template-upload">Import a palette</label>
-                    <span><a href="#" onclick="window.download('sample-palette.json')">(download the latest sample)</a></span>
-                    <input class="editor__input loader" id="template-upload" type="file">
-                </div>
-                <div class="editor__item">
-                    <label for="palette-new-color">Add one color</label>
-                    <div class="editor__input">
-                        <input id="palette-new-color" class="editor__color-picker" type="text" placeholder="#000000" name="palette-new-color">
-                        <button class="editor__add-foreground">add to foreground</button>
-                        <button class="editor__add-background">add to background</button>
-                    </div>
-                </div>
-            </section>
-            <div class="hint">Tips</div>
-            <ul class="hint__list">
-                <li>Select a cell to highlight its foreground/background colors</li>
-                <li>Mouseover a cell to get color names</li>
-                <li>Bookmark the page (Ctrl + D) so you can come back to a palette later</li>
-            </ul>
+    <body class="t-p">
+        <header class="header">
+            <div class="header__icon-container">
+                <img class="header__icon" alt="" src="header-icon.svg">
+            </div>
+            <h1 class="t-h1 header__text">WCAG2.0 CONTRAST MATRIX</h1>
+            <div class="header__mode-toggle">
+                <label for="background-toggle">Dark mode</label>
+                <input id="background-toggle" class="header__mode-toggle-input" type="checkbox">
+            </div>
         </header>
-        <main>
+        <main class="main">
+            <header class="settings">
+                <section class="editor">
+                    <div class="editor__item">
+                        <label class="t-h2 editor__item-label" for="template-upload">Import a palette</label>
+                        <input class="editor__file-input" id="template-upload" type="file">
+                        <div>
+                            <button class="box-button box-button--primary editor__import-palette" onclick="document.getElementById('template-upload').click()">Upload</button>
+                            <span><a class="link" href="#" onclick="window.download('sample-palette.json')">click here to download the template</a></span>
+                        </div>
+                    </div>
+                    <div class="editor__item">
+                        <label class="t-h2 editor__item-label" for="palette-new-color">Add one color</label>
+                        <div>
+                            <input id="palette-new-color" class="editor__color-picker" type="text" placeholder="#000000" name="palette-new-color">
+                            <button class="box-button box-button--primary editor__add-foreground">Add to foreground</button>
+                            <button class="box-button box-button--primary editor__add-background">Add to background</button>
+                        </div>
+                    </div>
+                </section>
+                <section class="hint">
+                    <h2 class="t-h2 hint__title">Tips</h2>
+                    <ul class="hint__list">
+                        <li>Click a cell to highlight its foreground/background colors</li>
+                        <li>Mouseover a cell to get color names</li>
+                        <li>Bookmark the page (<code class="t-code">Ctrl/Cmd + D</code>) so you can come back to a palette later</li>
+                        <li>Use the dark mode (at the top right corner) to inspect hard-to-see colors</li>
+                        <li>Supported browsers: Edge, Chrome, Firefox, and Safari</li>
+                    </ul>
+                </section>
+            </header>
             <div class="palette">
                 <div class="palette__foregrounds palette__swatches"></div>
             </div>

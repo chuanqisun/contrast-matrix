@@ -3,10 +3,12 @@ import { Model } from './model';
 import { View } from './view';
     
 export class Controller {
+    private mainElement = document.getElementsByClassName('main')[0];
     private addBackground = document.getElementsByClassName('editor__add-background')[0];
     private addForeground = document.getElementsByClassName('editor__add-foreground')[0];
     private colorPicker = document.getElementsByClassName('editor__color-picker')[0] as HTMLInputElement;
-    private inputElement = document.getElementsByClassName('loader')[0];
+    private inputElement = document.getElementsByClassName('editor__file-input')[0];
+    private backgroundToggle = document.getElementById('background-toggle') as HTMLInputElement;
     private picker = new FilePicker(this.inputElement as HTMLInputElement);
     private parser = new JsonFileParser();
     private backgroundNewCounter = 0;
@@ -50,5 +52,14 @@ export class Controller {
             this.view.render();
             this.picker.reset();
         });
+
+        this.backgroundToggle.addEventListener('click', () => {
+            if(this.backgroundToggle.checked) {
+                this.mainElement.classList.add('main--dark');
+            } else {
+                this.mainElement.classList.remove('main--dark');
+            }
+        });
+
     }
 }
